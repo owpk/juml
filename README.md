@@ -38,12 +38,13 @@ juml is an extension for Visual Studio Code that helps Java developers visualize
 java -version
 ```
 2. Install juml from Visual Studio Code Marketplace
-<img alt="Installation" src="docs/mrktplc.jpg">
+<img alt="Installation" src="docs/jumlmarketplace.jpg">
 
 ### Create a diagram from Java code
 - Open the command palette (`Cmd+Shift+P on macOS` or `Ctrl+Shift+P on Windows/Linux`)
 - Type `juml : Convert Source to Diagram`
 - Select the path to the Java sources
+- Done! Generated diagram will be saved to the same directory as the source code named `juml.drawio`
 ---
 
 ## 🔨 Development

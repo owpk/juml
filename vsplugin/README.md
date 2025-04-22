@@ -1,5 +1,5 @@
 <div align="center">
-   <img src="images/icon.png" alt="Icon" width="150" style="border-radius: 50%;"/>
+   <img src="https://raw.githubusercontent.com/owpk/juml/refs/heads/main/vsplugin/images/icon.png" alt="Icon" width="150" style="border-radius: 50%;"/>
 </div>
 
 #### 📝 source code: [github/owpk](https://github.com/owpk/)
@@ -24,7 +24,7 @@ java -version
 - Open the command palette (`Cmd+Shift+P on macOS` or `Ctrl+Shift+P on Windows/Linux`)
 - Type `juml : Convert Source to Diagram`
 - Select the path to the Java sources
-- Done! Generated diagram will be saved to the same directory as the source code named `jd.drawio`
+- Done! Generated diagram will be saved to the same directory as the source code named `juml.drawio`
 
 ## ✨ Features
 
