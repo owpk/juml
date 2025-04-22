@@ -2,12 +2,12 @@
    <img src="images/icon.png" alt="Icon" width="150" style="border-radius: 50%;"/>
 </div>
 
-#### 📝 source code: [github/owpk](https://github.com/owpk/jdiagram)
+#### 📝 source code: [github/owpk](https://github.com/owpk/)
 
 # Java UML diagram generator 📊
 
-[![VS Code Extension](https://img.shields.io/visual-studio-marketplace/v/owpk.jdiagram)](https://marketplace.visualstudio.com/items?itemName=owpk.jdiagram)
-[![License](https://img.shields.io/github/license/owpk/jdiagram)](LICENSE)
+[![VS Code Extension](https://img.shields.io/visual-studio-marketplace/v/owpk.juml)](https://marketplace.visualstudio.com/items?itemName=owpk.juml)
+[![License](https://img.shields.io/github/license/owpk/juml)](LICENSE)
 
 > ⚠️ **IMPORTANT!!!**: The plugin **requires Java SE 17** or higher to work!
 
@@ -22,7 +22,7 @@ java -version
 ### Create a diagram from Java code
 
 - Open the command palette (`Cmd+Shift+P on macOS` or `Ctrl+Shift+P on Windows/Linux`)
-- Type `jdiagram : Convert Source to Diagram`
+- Type `juml : Convert Source to Diagram`
 - Select the path to the Java sources
 - Done! Generated diagram will be saved to the same directory as the source code named `jd.drawio`
 
@@ -54,8 +54,8 @@ Build from sources
 1. Clone the repository:
 
 ```sh
-git clone https://github.com/your-username/jdiagram.git
-cd jdiagram
+git clone https://github.com/your-username/juml.git
+cd juml
 ```
 
 2. Build the project:
@@ -67,7 +67,7 @@ cd jdiagram
 Run from command line
 
 ```sh
-java -jar jdiagram.jar -s <source-path> -t <target-path>
+java -jar juml.jar -s <source-path> -t <target-path>
 ```
 
 ## 📝 Contributing
@@ -94,4 +94,4 @@ MIT License - details in the LICENSE file
 
 ---
 
-If you have any problems or suggestions for improvement, create an [Issue](https://github.com/owpk/jdiagram/issues).
+If you have any problems or suggestions for improvement, create an [Issue](https://github.com/owpk/juml/issues).

@@ -4,14 +4,14 @@ exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
 const vscode_1 = require("vscode");
 const utils_1 = require("./utils");
-const jdiagramName = "jdiagram.jar";
-const extName = "owpk.jdiagram";
-const drawioName = "jd.drawio";
+const jdiagramName = "juml.jar";
+const extName = "owpk.juml";
+const drawioName = "juml.drawio";
 async function activate(context) {
     let jdJarPath = await (0, utils_1.getJdPath)(extName, jdiagramName);
     console.log("jdiagrma jar path: " + jdJarPath);
     const { exec } = require("child_process");
-    context.subscriptions.push(vscode_1.commands.registerCommand("jdiagram.Source_to_Diagram", async () => {
+    context.subscriptions.push(vscode_1.commands.registerCommand("juml.Source_to_Diagram", async () => {
         const selectJavaFiles = await vscode_1.window.showQuickPick(["Open File Finder", "Manually Write Path"], {
             placeHolder: "Choose JAVA Sources or directory containing them",
         });

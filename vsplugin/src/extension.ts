@@ -7,14 +7,13 @@ const extName = "owpk.juml";
 const drawioName = "juml.drawio";
 
 export async function activate(context: vscode.ExtensionContext) {
-
   let jdJarPath = await getJdPath(extName, jdiagramName);
   console.log("jdiagrma jar path: " + jdJarPath);
 
   const { exec } = require("child_process");
 
   context.subscriptions.push(
-    commands.registerCommand("jdiagram.Source_to_Diagram", async () => {
+    commands.registerCommand("juml.Source_to_Diagram", async () => {
       const selectJavaFiles = await window.showQuickPick(
         ["Open File Finder", "Manually Write Path"],
         {
@@ -63,7 +62,9 @@ export async function activate(context: vscode.ExtensionContext) {
             }
           });
         });
-        vscode.window.showInformationMessage(`Diagram generated successfully! ${drawioFilePath}`);
+        vscode.window.showInformationMessage(
+          `Diagram generated successfully! ${drawioFilePath}`,
+        );
       } catch (error: any) {
         vscode.window.showErrorMessage(`Error: ${error.message}`);
       }
@@ -71,4 +72,4 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 }
 
-export function deactivate() { }
+export function deactivate() {}
