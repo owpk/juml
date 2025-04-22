@@ -1,7 +1,3 @@
-<div align="center">
-   <img src="https://raw.githubusercontent.com/owpk/juml/refs/heads/main/vsplugin/images/icon.png" alt="Icon" width="150" style="border-radius: 50%;"/>
-</div>
-
 #### 📝 source code: [github/owpk](https://github.com/owpk/)
 
 # Java UML diagram generator 📊

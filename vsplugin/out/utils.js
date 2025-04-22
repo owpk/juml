@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.concat = exports.getJdPath = void 0;
+exports.getTempDir = exports.concat = exports.getJdPath = void 0;
 const fsPromises = require("node:fs/promises");
 const path = require("node:path");
 const osName = process.platform;
-const userProfile = process.platform === "win32" ? "USERPROFILE" : "HOME";
+const userProfile = osName === "win32" ? "USERPROFILE" : "HOME";
+const tempDir = osName === "win32" ? process.env.TEMP : "/tmp";
 const userProfilePath = process.env[userProfile];
 const vscodeExtensionPath = path.join(userProfilePath, ".vscode", "extensions");
 /**
@@ -20,6 +21,10 @@ function concat(...args) {
     return args.join(path.sep);
 }
 exports.concat = concat;
+function getTempDir() {
+    return tempDir;
+}
+exports.getTempDir = getTempDir;
 function findExtensionAbsolutePath(files, ext, jar) {
     const extensionDir = files.find(file => file.startsWith(ext));
     if (!extensionDir) {

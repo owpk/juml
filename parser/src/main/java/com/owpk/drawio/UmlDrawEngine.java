@@ -180,7 +180,7 @@ public class UmlDrawEngine {
 
         for (var parent : classUml.getParent()) {
             var parentXml = createClassBox(parent, visited);
-            xmlElementRegistry.createLine(0, parentXml.getXmlId(), childXml.getXmlId());
+            xmlElementRegistry.createLine(0, childXml.getXmlId(), parentXml.getXmlId());
         }
     }
 

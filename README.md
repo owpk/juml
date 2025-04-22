@@ -7,10 +7,16 @@
 [![VS Code Extension](https://img.shields.io/visual-studio-marketplace/v/owpk.juml)](https://marketplace.visualstudio.com/items?itemName=owpk.juml)
 [![License](https://img.shields.io/github/license/owpk/juml)](LICENSE)
 
-> ⚠️ **IMPORTANT!!!**: The plugin **requires Java SE 17** or higher to work!
+> **REQUIRES Java SE 17** or higher to work!
+
+> **REQUIRES** [hediet.vscode-drawio](https://github.com/hediet/vscode-drawio) plugin installed
 
 ## 🎯 Overview
 juml is an extension for Visual Studio Code that helps Java developers visualize the architecture of the project. The plugin provides convenient conversion between Java source code and class diagram.
+
+<div align="center">
+   <img src="docs/example.gif" alt="Icon" width="700""/>
+</div>
 
 ## ✨ Features
 - 🔄 Convert source code to uml diagram

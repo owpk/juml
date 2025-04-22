@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { commands, window } from "vscode";
-import { concat, getJdPath } from "./utils";
+import { concat, getJdPath, getTempDir } from "./utils";
 
 const jdiagramName = "juml.jar";
 const extName = "owpk.juml";
@@ -15,13 +15,35 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     commands.registerCommand("juml.Source_to_Diagram", async () => {
       const selectJavaFiles = await window.showQuickPick(
-        ["Open File Finder", "Manually Write Path"],
+        ["Select From Project Root", "Browse Other Location"],
         {
-          placeHolder: "Choose JAVA Sources or directory containing them",
-        },
+          placeHolder: "Choose Java source location",
+        }
       );
-      var javaPath = undefined;
-      if (selectJavaFiles === "Open File Finder") {
+
+      var javaPath = "./";
+
+      if (selectJavaFiles === "Select From Project Root") {
+        const workspaceFolders = vscode.workspace.workspaceFolders;
+
+        if (workspaceFolders && workspaceFolders.length > 0) {
+          const folderPaths = workspaceFolders.map(folder => ({
+            label: folder.name,
+            description: folder.uri.fsPath
+          }));
+
+          const selectedFolder = await window.showQuickPick(folderPaths, {
+            placeHolder: "Select project directory containing Java sources",
+          });
+
+          if (selectedFolder) {
+            javaPath = selectedFolder.description;
+            console.log("Selected project directory: " + javaPath);
+          }
+        } else {
+          vscode.window.showWarningMessage("No workspace folders found. Please open a project first.");
+        }
+      } else if (selectJavaFiles === "Browse Other Location") {
         const options: vscode.OpenDialogOptions = {
           canSelectMany: false,
           openLabel: "Select",
@@ -29,47 +51,37 @@ export async function activate(context: vscode.ExtensionContext) {
           canSelectFolders: true,
         };
 
-        await vscode.window.showOpenDialog(options).then((fileUri) => {
-          if (fileUri && fileUri[0]) {
-            console.log("Selected file: " + fileUri[0].fsPath);
-            javaPath = fileUri[0].fsPath;
-          }
-        });
-      } else if (selectJavaFiles === "Manually Write Path") {
-        javaPath = await window.showInputBox({
-          placeHolder:
-            "Path to JAVA source file or directory containing JAVA source files",
-        });
+        const fileUri = await vscode.window.showOpenDialog(options);
+        if (fileUri && fileUri[0]) {
+          javaPath = fileUri[0].fsPath;
+          console.log("Selected location: " + javaPath);
+        }
       }
 
-      var drawioPath: string = vscode.workspace.workspaceFolders
-        ? vscode.workspace.workspaceFolders[0].uri.fsPath
-        : ".";
+      var drawioPath: string = getTempDir();
       var drawioFilePath: string = concat(drawioPath, drawioName);
       var command = `java -jar ${jdJarPath} -s ${javaPath} -t ${drawioFilePath}`;
       console.log("command : " + command);
 
-      try {
-        await new Promise<void>((resolve, reject) => {
-          exec(command, (err: any, stdout: any, stderr: any) => {
-            if (err) {
-              console.log(`Error: ${err.message}`);
-              console.log(`stderr: ${stderr}`);
-              reject(err);
-            } else {
-              console.log(`stdout: ${stdout}`);
-              resolve();
-            }
-          });
+      await new Promise<void>((resolve, reject) => {
+        exec(command, (err: any, stdout: any, stderr: any) => {
+          if (err) {
+            console.log(`Error: ${err.message}`);
+            console.log(`stderr: ${stderr}`);
+            vscode.window.showErrorMessage(`Error: ${err.message}`);
+            reject(err);
+          } else {
+            vscode.commands.executeCommand('vscode.open', vscode.Uri.file(drawioFilePath));
+            console.log(`stdout: ${stdout}`);
+            vscode.window.showInformationMessage(
+              `Diagram generated successfully! ${drawioFilePath}`,
+            );
+            resolve();
+          }
         });
-        vscode.window.showInformationMessage(
-          `Diagram generated successfully! ${drawioFilePath}`,
-        );
-      } catch (error: any) {
-        vscode.window.showErrorMessage(`Error: ${error.message}`);
-      }
+      });
     }),
   );
 }
 
-export function deactivate() {}
+export function deactivate() { }
