@@ -1,0 +1,26 @@
+# Built and temporary files
+/build                                   
+/node_modules
+/public/static
+/coverage
+/dist
+/tmp
+
+# Visual Studio Code
+.vscode/
+# Docker                                                                      
+Dockerfile.production
+docker-compose.yml
+
+# Testing
+**/__tests__/
+*.spec.ts
+*.spec.js
+
+# Miscellaneous
+*.css.map
+*.js.map
+*.d.ts
+*.swp
+*.log
+*.vsix

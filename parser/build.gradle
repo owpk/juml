@@ -1,0 +1,46 @@
+plugins {
+    id("io.micronaut.application") version "4.5.3"
+    id("com.gradleup.shadow") version "8.3.6"
+}
+
+version = "0.1"
+group = "com.owpk"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("info.picocli:picocli-codegen")
+    annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    implementation("info.picocli:picocli")
+    implementation("io.micronaut.picocli:micronaut-picocli")
+    implementation("io.micronaut.serde:micronaut-serde-jackson")
+    compileOnly("org.projectlombok:lombok")
+    runtimeOnly("ch.qos.logback:logback-classic")
+
+    implementation 'org.jboss.forge.roaster:roaster-api:2.30.1.Final'
+    implementation 'org.jboss.forge.roaster:roaster-jdt:2.30.1.Final'
+    implementation 'commons-io:commons-io:2.11.0'
+    
+    testImplementation 'junit:junit:4.11'
+    testImplementation 'org.assertj:assertj-core:3.6.2'
+}
+
+application {
+    mainClass = "com.owpk.JUmlCommand"
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
+}
+
+micronaut {
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("com.owpk.*")
+    }
+}
