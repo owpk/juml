@@ -7,6 +7,7 @@ import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.InterfaceCapable;
 import org.jboss.forge.roaster.model.JavaType;
 import org.jboss.forge.roaster.model.JavaUnit;
+import org.jboss.forge.roaster.model.impl.JavaRecordImpl;
 import org.jboss.forge.roaster.model.source.FieldSource;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaEnumSource;
@@ -53,11 +54,21 @@ public class JavaExtractorImpl extends AbsExtractor {
         } else if (javaType instanceof JavaEnumSource je) {
             populateEnumInfo(uml, je);
             result = uml.build();
+        } else if (javaType instanceof JavaRecordImpl jr) {
+            populateRecordInfo(uml, jr);
+            result = uml.build();
         } else {
             throw new IllegalArgumentException("Unsupported Java type: " + javaType.getClass());
         }
         sourceEntries.put(result.getClassIdentity(), result);
         return result;
+    }
+
+    private void populateRecordInfo(ClassUmlBuilder uml, JavaRecordImpl jr) {
+        uml.classId(new ClassId(jr.getName(), jr.getPackage()));
+        uml.type(ClassType.CLASS);
+        uml.visibility(getVisibility(jr));
+        uml.methods(getMethods(jr.getMethods()));
     }
 
     private void populateEnumInfo(ClassUmlBuilder uml, JavaEnumSource je) {
