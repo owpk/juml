@@ -35,6 +35,10 @@ public class UmlElement implements XmlIdAware, Sorting {
         this.mxGeometry = umlElement.mxGeometry;
     }
 
+    public void appendOn(Element root) {
+        root.appendChild(element);
+    }
+
     public void setStyleName(String name) {
         var style = getStyle();
         style.setName(name);

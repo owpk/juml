@@ -33,20 +33,18 @@ public class DefaultElementRegistry implements XmlElementRegistry {
     private Map<String, UmlElement> elements = new HashMap<>();
 
     private Document document;
-    private Element root;
     private String nodeId;
 
     private int index;
 
-    public DefaultElementRegistry(Element root, Document document, String nodeId) {
+    public DefaultElementRegistry(Document document, Element nodeId) {
         this.document = document;
-        this.root = root;
-        this.nodeId = nodeId;
+        this.nodeId = nodeId.getAttribute("id");
     }
 
-    public DefaultElementRegistry(Element root, Document document, String nodeId,
+    public DefaultElementRegistry(Document document, Element nodeId,
             Map<ClassType, BoxStyle> classBoxStyles) {
-        this(root, document, nodeId);
+        this(document, nodeId);
         this.STYLE_MAP = classBoxStyles;
     }
 
@@ -74,7 +72,6 @@ public class DefaultElementRegistry implements XmlElementRegistry {
 
         var classBox = new ClassBox(classBoxId, nodeId, createMxCell(), createMxGeometry(),
                 classUml, style, boxFields, separator, boxMethods);
-        root.appendChild(classBox.getElement());
 
         elements.put(classBox.getXmlId(), classBox);
 
@@ -106,7 +103,6 @@ public class DefaultElementRegistry implements XmlElementRegistry {
         return fields.stream()
                 .map(it -> new ClassBoxField(height, style, it, inc(), parentId, createMxCell(), createMxGeometry()))
                 .peek(it -> elements.put(it.getXmlId(), it))
-                .peek(it -> root.appendChild(it.getElement()))
                 .toList();
     }
 
@@ -115,14 +111,12 @@ public class DefaultElementRegistry implements XmlElementRegistry {
         return methods.stream()
                 .map(it -> new ClassBoxMethod(height, style, it, inc(), parentId, createMxCell(), createMxGeometry()))
                 .peek(it -> elements.put(it.getXmlId(), it))
-                .peek(it -> root.appendChild(it.getElement()))
                 .toList();
     }
 
     private ClassBoxSeparator registerClassBoxSeparator(String id, String parentId, String color) {
         var classBoxSeparator = new ClassBoxSeparator(color, id, parentId, createMxCell(), createMxGeometry());
         elements.put(classBoxSeparator.getXmlId(), classBoxSeparator);
-        root.appendChild(classBoxSeparator.getElement());
         return classBoxSeparator;
     }
 
@@ -142,9 +136,7 @@ public class DefaultElementRegistry implements XmlElementRegistry {
 
     @Override
     public UmlElement createLine(int value, String sourceId, String targetId) {
-        var line = new RelationLine(value, sourceId, targetId, inc(), this.nodeId, createMxCell(), createMxGeometry());
-        root.appendChild(line.getElement());
-        return line;
+        return new RelationLine(value, sourceId, targetId, inc(), this.nodeId, createMxCell(), createMxGeometry());
     }
 
     @Override

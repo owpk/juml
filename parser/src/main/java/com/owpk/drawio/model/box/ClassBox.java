@@ -64,4 +64,12 @@ public class ClassBox extends UmlElement {
 		this.classBoxSeparator.setWidth(maxWidht);
 	}
 
+	@Override
+	public void appendOn(Element root) {
+		root.appendChild(this.element);
+		root.appendChild(classBoxSeparator.getElement());
+		fields.forEach(it -> it.appendOn(root));
+		methods.forEach(it -> it.appendOn(root));
+	}
+
 }

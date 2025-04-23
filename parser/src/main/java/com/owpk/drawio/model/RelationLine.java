@@ -22,12 +22,17 @@ public class RelationLine extends UmlElement {
             case 0 -> "endArrow=block;";
             default -> "";
         });
+
         style.addAttribute("edgeStyle", "orthogonalEdgeStyle");
         style.addAttribute("jumpStyle", "arc");
+        style.addAttribute("startArrow", "oval");
+        style.addAttribute("startFill", "1");
+        style.addAttribute("startSize", "7");
+        style.addAttribute("endSize", "7");
         setStyle(style);
+
         setGeometryAttribute("width", "160");
         setGeometryAttribute("relative", "1");
-
         setElementAttribute("value", value);
         setElementAttribute("edge", "1");
         setElementAttribute("source", source);

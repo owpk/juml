@@ -3,6 +3,7 @@ package com.owpk.drawio;
 import static com.owpk.drawio.Utils.addAttr;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,9 +59,6 @@ public class UmlDrawEngine {
     /** Registry for creating and managing XML elements */
     private XmlElementRegistry xmlElementRegistry;
 
-    /** Map to track parent-child relationships between classes */
-    private Map<String, List<String>> parentToChildRelations = new HashMap<>();
-
     /** XML document object */
     private Document document;
 
@@ -84,7 +82,17 @@ public class UmlDrawEngine {
         this.document = createXmlDocument();
         this.root = initXMLfile(document);
         this.nodeId = "a_1";
-        this.xmlElementRegistry = new DefaultElementRegistry(root, document, nodeId);
+
+        var biggestBox = document.createElement("mxCell");
+        addAttr(biggestBox, "id", "a_0");
+        root.appendChild(biggestBox);
+
+        var biggerBox = document.createElement("mxCell");
+        addAttr(biggerBox, "id", nodeId);
+        addAttr(biggerBox, "parent", "a_0");
+        root.appendChild(biggerBox);
+
+        this.xmlElementRegistry = new DefaultElementRegistry(document, biggerBox);
     }
 
     /**
@@ -99,26 +107,7 @@ public class UmlDrawEngine {
      * </ol>
      */
     public void createDrawio() {
-
-        var biggestBox = document.createElement("mxCell");
-        addAttr(biggestBox, "id", "a_0");
-        root.appendChild(biggestBox);
-
-        var biggerBox = document.createElement("mxCell");
-        addAttr(biggerBox, "id", nodeId);
-        addAttr(biggerBox, "parent", "a_0");
-        root.appendChild(biggerBox);
-
         iterateOverClasses(classBoxes);
-
-        for (var entry : parentToChildRelations.entrySet()) {
-            var parentId = entry.getKey();
-            var childIds = entry.getValue();
-
-            for (var childId : childIds)
-                xmlElementRegistry.createLine(0, parentId, childId);
-        }
-
         // transform the DOM Object to an XML File
         writeeXMLFile(drawioPath);
     }
@@ -137,9 +126,10 @@ public class UmlDrawEngine {
      */
     private void iterateOverClasses(List<ClassUml> classUmls) {
         Map<String, UmlElement> visited = new HashMap<>();
-        for (var uml : classUmls) {
-            iterateOverElement(uml, visited);
-        }
+        var lines = new ArrayList<UmlElement>();
+
+        for (var uml : classUmls)
+            iterateOverElement(uml, visited, lines);
 
         TreeMap<Integer, List<UmlElement>> sortedClasses = visited.values()
                 .stream()
@@ -164,6 +154,13 @@ public class UmlDrawEngine {
             x = INITIAL_OFFSET;
             y += maxY + ELEMENT_GAP;
         }
+
+        // append lines and uml boxes
+        for (var line : lines)
+            line.appendOn(root);
+
+        for (var umlElement : visited.values())
+            umlElement.appendOn(root);
     }
 
     /**
@@ -175,12 +172,13 @@ public class UmlDrawEngine {
      * @param classUml The class UML model to process
      * @param visited  Map of already processed classes to avoid duplication
      */
-    private void iterateOverElement(ClassUml classUml, Map<String, UmlElement> visited) {
+    private void iterateOverElement(ClassUml classUml, Map<String, UmlElement> visited, List<UmlElement> lines) {
         var childXml = createClassBox(classUml, visited);
 
         for (var parent : classUml.getParent()) {
             var parentXml = createClassBox(parent, visited);
-            xmlElementRegistry.createLine(0, childXml.getXmlId(), parentXml.getXmlId());
+            var line = xmlElementRegistry.createLine(0, childXml.getXmlId(), parentXml.getXmlId());
+            lines.add(line);
         }
     }
 
