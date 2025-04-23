@@ -9,6 +9,9 @@
 
 ## 🚀 Getting Started
 
+<div align="center">
+   <img src="https://raw.githubusercontent.com/owpk/juml/refs/heads/main/docs/example.gif" alt="Icon" width="700""/>
+</div>
 1. Make sure you have Java 17 or higher installed
 
 ```bash
