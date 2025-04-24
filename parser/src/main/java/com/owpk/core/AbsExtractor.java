@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Queue;
 
 import com.owpk.model.ClassUml;
@@ -44,7 +45,10 @@ public abstract class AbsExtractor implements SourceCodeExtractor {
     @Override
     public List<ClassUml> extractSource() {
         var rawSources = getRawData(extractPath);
-        var sources = rawSources.stream().map(it -> getUmlSource(it)).toList();
+        var sources = rawSources.stream()
+                .map(it -> getUmlSource(it))
+                .flatMap(it -> it.stream())
+                .toList();
 
         while (!unresolwedChains.isEmpty()) {
             var next = unresolwedChains.poll();
@@ -86,6 +90,6 @@ public abstract class AbsExtractor implements SourceCodeExtractor {
         }
     }
 
-    protected abstract ClassUml getUmlSource(String path) throws RuntimeException;
+    protected abstract Optional<ClassUml> getUmlSource(String path) throws RuntimeException;
 
 }

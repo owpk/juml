@@ -2,7 +2,7 @@
   "name": "juml",
   "displayName": "juml",
   "description": "juml is an extension for Visual Studio Code to generate UML diagram from source code.",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "engines": {
     "vscode": "^1.75.0"
   },
